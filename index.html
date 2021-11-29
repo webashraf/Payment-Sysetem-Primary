@@ -22,9 +22,9 @@
 	display: inline-block;
 	text-align: center;
 }
-/* #paymentSaction{
-  display: block !important;
-} */
+#paymentSaction{
+  display: none;
+}
 #paymentSaction {
 	width: 958px;
 }
@@ -36,7 +36,7 @@
   </head>
   <body>
       <main class="d-flex justify-content-center align-items-center mt-5">
-          <section id="login-page" class="mt-3 d-none">
+          <section id="login-page" class="mt-3">
             <div class="container">
                 <div class="row">
                     <h1 class="text-center">Welcome to Bangladesh Bank</h1>
@@ -62,7 +62,7 @@
                 <div class="col-lg-4">
                   <div class="box-payment bg-info p-4 rounded-3">
                     <h5>Withdraw </h5>
-                    <h1>$ 00</h1>
+                    <h1>$ <span id="witdrawAmount">00</span></h1>
                   </div>
                 </div>                
                 <div class="col-lg-4">
@@ -83,7 +83,7 @@
                 <div class="col-xl-6">
                   <div class="from-box shadow-lg rounded-3 bg-light p-5">
                     <h4>Withdraw</h4>
-                    <input class="form-control mb-2" type="text" placeholder="$ Amount you want to withdraw">
+                    <input id="withdrawInput" class="form-control mb-2" type="text" placeholder="$ Amount you want to withdraw">
                     <button id="withdrawBtn" class="btn btn-success">Withdraw</button>
                   </div>
                 </div>                
@@ -95,44 +95,50 @@
     <!-- <script></script> -->
     <script>
       // Login button event handler
-        // document.getElementById('loginBtn').addEventListener('click', function(){
-        //     let loginPageArea = document.getElementById('login-page');
-        //     loginPageArea.style.display = "none";
-            // console.log('Amare click marse');
+        document.getElementById('loginBtn').addEventListener('click', function(){
+            let loginPageArea = document.getElementById('login-page');
+            loginPageArea.style.display = "none";
 
-            // let paymentPagee = document.getElementById('paymentSaction');
-            // paymentPagee.style.display = 'block';
-        // })
+            let paymentPagee = document.getElementById('paymentSaction');
+            paymentPagee.style.display = 'block';
+        })
 
-        // Deposit button event handler
+
+        // Deposit and balance button event handler
+        // Deposit and balance button event handler
         document.getElementById('depositBtn').addEventListener('click', function(){
-          // console.log('Ami Deposit Button. Amare Click Marse.')
-          const depostAmunt = document.getElementById('depositAmount').value;
-          const depositNumConvert = parseFloat(depostAmunt);
-          document.getElementById('depositAmount').value = "";
-
-          // const currentDepo = document.getElementById('curentDeposit').innerText;
-          // const curentDepoConvert = parseFloat(currentDepo);
-          // const totalDeposit = depositNumConvert + curentDepoConvert;
-          // document.getElementById('curentDeposit').innerText = totalDeposit;
-
-          updateSpanNumber('curentDeposit', depositNumConvert);
-
-          // const oldBalance = document.getElementById('balanceAmount').innerText;
-          // const blanceConvert = parseFloat(oldBalance);
-          // const totalBalance = depositNumConvert + blanceConvert;
-          // document.getElementById('balanceAmount').innerText = totalBalance;
-          updateSpanNumber('balanceAmount', depositNumConvert)
+          const depostInputConvert = updateInput('depositAmount')
+          updateSpanNumber('curentDeposit', depostInputConvert);
+          updateSpanNumber('balanceAmount', depostInputConvert);
 
         })
-        function updateSpanNumber(id, depoConvert){
+
+        // Withdraw button event handler
+        // Withdraw button event handler
+        document.getElementById('withdrawBtn').addEventListener('click', function(){
+          const withdrawInputConvert = updateInput('withdrawInput');
+          updateSpanNumber('witdrawAmount', withdrawInputConvert);
+          updateSpanNumber('balanceAmount', -1* withdrawInputConvert);
+        })
+
+
+        // _____________________________________
+        // Update Function// Update Function
+        // Update Input Number Convert Function
+        function updateInput(id){
+          const inputOld = document.getElementById(id).value;
+          const inputConvert = parseFloat(inputOld);
+          document.getElementById(id).value = '';
+          return inputConvert
+        }
+        // Update Span number fanction
+        function updateSpanNumber(id, inputConvertP){
           const current = document.getElementById(id).innerText;
-          const curentConvert = parseFloat(current);
-          const totalAmountBlance = depoConvert + curentConvert;
+          const spanConvert = parseFloat(current);
+          const totalAmountBlance = inputConvertP + spanConvert;
           document.getElementById(id).innerText = totalAmountBlance;
         }
-        // Withdraw button event handler
-  
+
      </script>
   </body>
 </html>
